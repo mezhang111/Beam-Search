@@ -3,6 +3,7 @@ import numpy as np
 import time
 import matplotlib
 import matplotlib.pyplot as plt
+import random
 from tqdm import tqdm
 
 def test_with_time_measure(selector, arr, k):
@@ -31,6 +32,8 @@ def testcases(selector_list, n, k):
 	return times
 
 def main():
+	random.seed(112)
+	np.random.seed(259)
 	HS = s.HeapSelector()
 	DS = s.DeterministicSelector()
 	RS = s.RandomSelector()
@@ -44,6 +47,8 @@ def main():
 	for i in range(len(selector_list)):
 		plt.plot(k, times[i,:], label = selector_list[i].name)
 	plt.legend()
+	plt.xlabel('k')
+	plt.ylabel('time')
 	plt.show()
 
 

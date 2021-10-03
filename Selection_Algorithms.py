@@ -33,17 +33,6 @@ def HeapSelection(arr,k):
 
 	return candidates[0]
 
-def partition_into_5er_set(arr): 
-	n = len(arr)
-	sets = []
-	index = 0
-	while index+5 < n:
-	    sets.append(arr[index:index+5])
-	    index += 5
-	sets.append(arr[index:])
-
-	return sets
-
 
 def split(arr, M): #for derteministic select
 	A1 = []
@@ -66,11 +55,11 @@ def DeterministicSelection(arr,k):
 		#return (HeapSelection(arr, k))
 		return sorted(arr)[n-k]
 	else: 
-		sets = partition_into_5er_set(arr) #partition arr into subsets of 5 elements
-		medians = []
-		for subset in sets:
-			l = len(subset)
-			medians.append(DeterministicSelection(subset, (l+1)//2)) #find median of subarray in O(1)
+		sets = [arr[x:x+5] for x in range(0, len(arr),5)] #partition arr into subsets of 5 elements
+		medians = [sorted(subset)[(len(subset)-1)//2] for subset in sets] #find medians of all subarrays
+		#for subset in sets:
+		#	l = len(subset)
+		#	medians.append(sorted(subset)[(l-1)//2]) 
 
 		M = DeterministicSelection(medians, (len(medians)+1)//2) #find median of medians
 		A1, A2, A3 = split(arr, M); #split arr into 3 subarrays: A1<M, A2 = M, A3 > M
