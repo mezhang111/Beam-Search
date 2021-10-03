@@ -62,8 +62,9 @@ def split(arr, M): #for derteministic select
 def DeterministicSelection(arr,k): 
 	n = len(arr)
 	assert k>0 and k<=n, k
-	if n <= 10:
-		return (HeapSelection(arr, k))
+	if n <= 20:
+		#return (HeapSelection(arr, k))
+		return sorted(arr)[n-k]
 	else: 
 		sets = partition_into_5er_set(arr) #partition arr into subsets of 5 elements
 		medians = []
@@ -83,8 +84,9 @@ def DeterministicSelection(arr,k):
 def RandomSelection(arr, k):
 	n = len(arr)
 	assert k>0 and k<=n, k
-	if n <= 10:
-		return (HeapSelection(arr, k))
+	if n <= 20:
+		#return (HeapSelection(arr, k))
+		return sorted(arr)[n-k]
 	else:
 		index = random.randint(0,n-1) #pick a random index
 		A1, A2, A3 = split(arr, arr[index]) #split arr into 3 subarrays: A1 < arr[index], A2 = arr[index], A3 > arr[index]

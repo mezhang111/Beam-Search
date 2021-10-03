@@ -35,7 +35,7 @@ def main():
 	DS = s.DeterministicSelector()
 	RS = s.RandomSelector()
 	n = 100000
-	k = range(1000,n//2+1,1000)
+	k = range(1000,n//2+1,100)
 	selector_list = [HS,DS,RS]
 	times = np.zeros(shape = [len(selector_list), len(k)])
 	for i in tqdm(range(len(k))):
