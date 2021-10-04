@@ -50,16 +50,13 @@ def split(arr, M): #for derteministic select
 
 def DeterministicSelection(arr,k): 
 	n = len(arr)
+	subarr_size = 31
 	assert k>0 and k<=n, k
-	if n <= 20:
-		#return (HeapSelection(arr, k))
+	if n <= 2*subarr_size+1:
 		return sorted(arr)[n-k]
 	else: 
-		sets = [arr[x:x+5] for x in range(0, len(arr),5)] #partition arr into subsets of 5 elements
+		sets = [arr[x:x+subarr_size] for x in range(0, len(arr),subarr_size)] #partition arr into subsets of subarr_size elements
 		medians = [sorted(subset)[(len(subset)-1)//2] for subset in sets] #find medians of all subarrays
-		#for subset in sets:
-		#	l = len(subset)
-		#	medians.append(sorted(subset)[(l-1)//2]) 
 
 		M = DeterministicSelection(medians, (len(medians)+1)//2) #find median of medians
 		A1, A2, A3 = split(arr, M); #split arr into 3 subarrays: A1<M, A2 = M, A3 > M
@@ -73,18 +70,18 @@ def DeterministicSelection(arr,k):
 def RandomSelection(arr, k):
 	n = len(arr)
 	assert k>0 and k<=n, k
-	if n <= 20:
-		#return (HeapSelection(arr, k))
+	if n == 10:
 		return sorted(arr)[n-k]
 	else:
 		index = random.randint(0,n-1) #pick a random index
-		A1, A2, A3 = split(arr, arr[index]) #split arr into 3 subarrays: A1 < arr[index], A2 = arr[index], A3 > arr[index]
+		val = arr[index]
+		A1, A2, A3 = split(arr, val) #split arr into 3 subarrays: A1 < arr[index], A2 = arr[index], A3 > arr[index]
 		if k <= len(A3):
 			return RandomSelection(A3, k)
 		elif k > len(A3) + len(A2):
 			return RandomSelection(A1, k-len(A3)-len(A2))
 		else:
-			return arr[index]
+			return val
 
 
 
