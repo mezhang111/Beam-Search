@@ -34,19 +34,11 @@ def HeapSelection(arr,k):
 	return candidates[0]
 
 
-def split(arr, M): #for derteministic select
-	A1 = []
-	A2 = []
-	A3 = []
+def split(arr, M):
+	A1, A2 = [], []
 	for val in arr:
-		if val < M:
-		    A1.append(val)
-		elif val > M:
-		    A3.append(val)
-		else:
-		    A2.append(val)
-
-	return A1, A2, A3
+		(A1 if val < M else A2).append(val)
+	return A1, A2
 
 def DeterministicSelection(arr,k): 
 	n = len(arr)
@@ -59,29 +51,27 @@ def DeterministicSelection(arr,k):
 		medians = [sorted(subset)[(len(subset)-1)//2] for subset in sets] #find medians of all subarrays
 
 		M = DeterministicSelection(medians, (len(medians)+1)//2) #find median of medians
-		A1, A2, A3 = split(arr, M); #split arr into 3 subarrays: A1<M, A2 = M, A3 > M
-		if k <= len(A3):
-			return DeterministicSelection(A3, k)
-		elif k > len(A3) + len(A2):
-			return DeterministicSelection(A1, k-len(A3)-len(A2))
+		A1, A2 = split(arr, M); #split arr into 2 subarrays: A1<M, A2 >= M
+		if k <= len(A2):
+			return DeterministicSelection(A2, k)
 		else:
-			return M
+			return DeterministicSelection(A1, k-(n-len(A1)))
+
 
 def RandomSelection(arr, k):
 	n = len(arr)
 	assert k>0 and k<=n, k
-	if n == 10:
+	if n <= 32:
 		return sorted(arr)[n-k]
 	else:
 		index = random.randint(0,n-1) #pick a random index
 		val = arr[index]
-		A1, A2, A3 = split(arr, val) #split arr into 3 subarrays: A1 < arr[index], A2 = arr[index], A3 > arr[index]
-		if k <= len(A3):
-			return RandomSelection(A3, k)
-		elif k > len(A3) + len(A2):
-			return RandomSelection(A1, k-len(A3)-len(A2))
+		A1, A2 = split(arr, val) #split arr into 2 subarrays: A1 < val, A2 >= val
+		if k <= len(A2):
+			return RandomSelection(A2, k)
 		else:
-			return val
+			return RandomSelection(A1, k-(n-len(A1)))
+
 
 
 

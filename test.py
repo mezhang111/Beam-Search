@@ -42,9 +42,9 @@ def main():
 	HS = s.HeapSelector()
 	DS = s.DeterministicSelector()
 	RS = s.RandomSelector()
-	n = 100000
-	k = [2**x for x in range(16)]
-	selector_list = [HS,DS,RS]
+	n = 3000000
+	k = [2**x for x in range(21)]
+	selector_list = [RS,DS,HS]
 	reps = 10
 	l = len(selector_list)
 	times = np.empty(shape = [len(k)*reps*l])
